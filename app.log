@@ -1,0 +1,201 @@
+2024-09-16 14:03:22,920 ERROR Form data requires "python-multipart" to be installed. 
+You can install "python-multipart" with: 
+
+pip install python-multipart
+
+2024-09-16 14:13:57,567 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-16 14:13:57,914 INFO User cyrilblyseth@hotmail.com registered successfully
+2024-09-16 14:14:02,406 ERROR Unhandled exception: name 'asyncpg' is not defined
+2024-09-16 14:14:03,664 ERROR Unhandled exception: name 'asyncpg' is not defined
+2024-09-16 14:16:02,898 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-16 14:16:03,145 ERROR Unhandled exception: name 'asyncpg' is not defined
+2024-09-16 14:16:05,335 ERROR Unhandled exception: name 'asyncpg' is not defined
+2024-09-16 14:20:53,125 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-16 14:20:53,374 ERROR Registration failed: Email already exists for cyrilblyseth@hotmail.com
+2024-09-16 14:20:55,422 ERROR Registration failed: Email already exists for cyrilblyseth@hotmail.com
+2024-09-16 14:24:10,105 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-16 14:24:10,396 ERROR Registration failed: Email already exists for cyrilblyseth@hotmail.com
+2024-09-16 14:24:11,342 ERROR Registration failed: Email already exists for cyrilblyseth@hotmail.com
+2024-09-16 14:24:12,192 ERROR Registration failed: Email already exists for cyrilblyseth@hotmail.com
+2024-09-16 14:34:25,567 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-16 14:34:27,016 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:27,016 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:27,016 INFO User cyrilblyseth2@hotmail.com registered successfully
+2024-09-16 14:34:27,018 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:27,021 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:27,022 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:27,032 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:28,050 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-16 14:34:29,709 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:29,709 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:29,709 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:29,709 ERROR Registration failed: Email already exists for cyrilblyseth@hotmail.com
+2024-09-16 14:34:29,710 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:29,710 ERROR Registration failed: Email already exists for cyrilblyseth@hotmail.com
+2024-09-16 14:34:29,710 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:29,710 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:34:29,963 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:35:41,931 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-16 14:35:42,354 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:35:44,384 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:35:45,333 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-16 14:35:46,169 ERROR Registration failed: Email already exists for cyrilblyseth2@hotmail.com
+2024-09-17 12:11:28,142 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:11:28,233 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-17 12:11:28,449 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:11:28,452 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:11:28,452 ERROR Unhandled exception: name 'uuid' is not defined
+2024-09-17 12:11:30,264 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:11:30,615 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:11:30,616 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:11:30,616 ERROR Unhandled exception: name 'uuid' is not defined
+2024-09-17 12:12:06,470 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:06,532 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-09-17 12:12:06,742 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:06,744 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:10,204 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:10,465 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:10,466 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:14,422 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:14,652 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:14,652 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:14,655 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:14,712 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:14,975 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:14,976 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,179 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:15,179 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,185 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,186 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,187 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,420 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:15,420 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,422 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,625 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:15,626 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,835 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:15,835 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,839 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,842 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:15,845 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:16,059 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:16,059 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:16,061 INFO Login/Signup attempt for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:16,408 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:16,408 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:16,600 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:16,600 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:16,797 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:16,797 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:16,992 INFO User cyrilblyseth2@hotmail.com logged in successfully
+2024-09-17 12:12:16,992 INFO Access token created for cyrilblyseth2@hotmail.com
+2024-09-17 12:12:29,090 INFO Login/Signup attempt for cyrilblyseth@hotmail.com
+2024-09-17 12:12:29,323 INFO User cyrilblyseth@hotmail.com logged in successfully
+2024-09-17 12:12:29,323 INFO Access token created for cyrilblyseth@hotmail.com
+2024-09-17 12:12:44,342 INFO Login/Signup attempt for cyrilblyset3h@hotmail.com
+2024-09-17 12:12:44,943 INFO User cyrilblyset3h@hotmail.com registered and logged in successfully
+2024-09-17 12:12:44,943 INFO Access token created for cyrilblyset3h@hotmail.com
+2024-09-17 12:12:46,169 INFO Login/Signup attempt for cyrilblyset3h@hotmail.com
+2024-09-17 12:12:46,289 INFO Login/Signup attempt for cyrilblyset3h@hotmail.com
+2024-09-17 12:12:46,538 INFO User cyrilblyset3h@hotmail.com logged in successfully
+2024-09-17 12:12:46,538 INFO Access token created for cyrilblyset3h@hotmail.com
+2024-09-17 12:12:46,745 INFO User cyrilblyset3h@hotmail.com logged in successfully
+2024-09-17 12:12:46,745 INFO Access token created for cyrilblyset3h@hotmail.com
+2024-10-02 13:14:28,864 ERROR Invalid client_id: your_client_id
+2024-10-02 13:21:43,052 ERROR Invalid client_id: your_client_id
+2024-10-02 13:21:43,228 ERROR Invalid client_id: your_client_id
+2024-10-02 13:21:51,155 ERROR Invalid client_id: your_client_id
+2024-10-02 13:21:52,696 ERROR Invalid client_id: your_client_id
+2024-10-02 13:31:21,568 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-10-02 13:31:21,979 INFO New user registered: admin2@example.com
+2024-10-02 13:32:10,131 INFO New user registered: admin22@example.com
+2024-10-02 13:42:40,944 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-10-02 13:42:54,697 INFO New user registered: admi2@example.com
+2024-10-02 13:46:04,094 WARNING (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "D:\PycharmProjects\OAUTH\.venv\Lib\site-packages\passlib\handlers\bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+              ^^^^^^^^^^^^^^^^^
+AttributeError: module 'bcrypt' has no attribute '__about__'
+2024-10-02 13:46:04,341 INFO User 'admi2@example.com' authenticated successfully with user_id '34'.
+2024-10-02 13:46:04,341 INFO Redirecting user 'admi2@example.com' to next URL: /
+2024-10-04 11:51:32,792 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:52:41,431 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:52:42,541 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:52:43,651 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:53:36,108 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:53:37,330 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:53:38,050 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:53:38,532 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:53:38,923 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:53:39,233 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:53:40,544 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:54:48,397 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:54:49,691 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:54:51,014 ERROR Invalid redirect_uri: http://localhost:3300/callback
+2024-10-04 11:55:58,970 ERROR Invalid redirect_uri: http://localhost:3300/Callback
+2024-10-04 11:56:01,336 ERROR Invalid redirect_uri: http://localhost:3300/Callback
+2024-10-04 11:56:02,692 ERROR Invalid redirect_uri: http://localhost:3300/Callback
+2024-10-04 11:56:03,025 ERROR Invalid redirect_uri: http://localhost:3300/Callback
+2024-10-04 11:56:03,477 ERROR Invalid redirect_uri: http://localhost:3300/Callback
+2024-10-04 11:56:03,920 ERROR Invalid redirect_uri: http://localhost:3300/Callback
+2024-10-04 11:56:04,162 ERROR Invalid redirect_uri: http://localhost:3300/Callback
+2024-10-04 11:56:04,897 ERROR Invalid redirect_uri: http://localhost:3300/Callback
+2024-10-04 11:57:18,211 ERROR Invalid redirect_uri: http://localhost:3000/Callback
+2024-10-04 11:58:13,451 ERROR Invalid redirect_uri: http://localhost:3000/Callback
+2024-10-04 12:04:51,638 ERROR Invalid redirect_uri: http://localhost:3000/callback
