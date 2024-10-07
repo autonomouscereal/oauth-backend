@@ -1,85 +1,150 @@
 # db_helper.py
+import logging
 
 import asyncpg
 from datetime import datetime
 from credential_manager import CredentialManager
 
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s [%(levelname)s] %(message)s',
+    handlers=[
+        logging.StreamHandler()
+    ]
+)
+
+
 class DBHelper:
     def __init__(self):
         self.credentials = CredentialManager.get_db_credentials()
 
-    async def init_db(self):
-        await self.connect_create_if_not_exists(
-            user=self.credentials['user'],
-            database=self.credentials['database'],
-            password=self.credentials['password'],
-            port=self.credentials['port'],
-            host=self.credentials['host']
-        )
-
-        conn = await self.get_db_connection()
-
-        # Create tables
-        await conn.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            id SERIAL PRIMARY KEY,
-            email VARCHAR UNIQUE NOT NULL,
-            hashed_password VARCHAR NOT NULL,
-            created_at TIMESTAMPTZ DEFAULT NOW()
-        );
-        """)
-
-        await conn.execute("""
-        CREATE TABLE IF NOT EXISTS oauth2_clients (
-            client_id VARCHAR PRIMARY KEY,
-            client_secret VARCHAR,
-            redirect_uris TEXT,
-            created_at TIMESTAMPTZ DEFAULT NOW()
-        );
-        """)
-
-        await conn.execute("""
-        CREATE TABLE IF NOT EXISTS oauth2_authorization_codes (
-            code VARCHAR PRIMARY KEY,
-            client_id VARCHAR REFERENCES oauth2_clients(client_id),
-            redirect_uri VARCHAR,
-            scope VARCHAR,
-            user_id INTEGER REFERENCES users(id),
-            code_challenge VARCHAR,
-            code_challenge_method VARCHAR,
-            expires_at TIMESTAMPTZ
-        );
-        """)
-
-        await conn.execute("""
-        CREATE TABLE IF NOT EXISTS refresh_tokens (
-            token VARCHAR PRIMARY KEY,
-            user_id INTEGER REFERENCES users(id),
-            expires_at TIMESTAMPTZ
-        );
-        """)
-
-        await conn.execute("COMMIT;")
-        await conn.close()
-
-    @staticmethod
-    async def connect_create_if_not_exists(user, database, password, port, host):
+    async def connect_create_if_not_exists(self, user, database, password, port, host):
+        """
+        Connect to the specified database. If it doesn't exist, connect to 'postgres' and create it.
+        """
+        logging.info(f"Attempting to connect to database '{database}' as user '{user}' at {host}:{port}")
         try:
             conn = await asyncpg.connect(user=user, database=database, password=password, port=port, host=host)
+            logging.info(f"Successfully connected to database '{database}' as user '{user}'")
             await conn.close()
-        except Exception:
-            sys_conn = await asyncpg.connect(user=user, database='postgres', password=password, port=port, host=host)
-            await sys_conn.execute(f'CREATE DATABASE "{database}" OWNER "{user}"')
-            await sys_conn.close()
+            return
+        except asyncpg.exceptions.InvalidCatalogNameError:
+            logging.warning(f"Database '{database}' does not exist. Attempting to create it.")
+            try:
+                # Connect to the default 'postgres' database to create the new database
+                sys_conn = await asyncpg.connect(user=user, database='postgres', password=password, port=port, host=host)
+                logging.info(f"Connected to 'postgres' database as user '{user}' to create '{database}'")
+                await sys_conn.execute(f'CREATE DATABASE "{database}" OWNER "{user}"')
+                logging.info(f"Database '{database}' created successfully with owner '{user}'")
+                await sys_conn.close()
+            except Exception as e:
+                logging.error(f"Failed to create database '{database}': {e}")
+                raise
+        except Exception as e:
+            logging.error(f"Failed to connect to database '{database}' as user '{user}': {e}")
+            raise
+
+    async def init_db(self):
+        """
+        Initialize the database by ensuring it exists and creating necessary tables.
+        """
+        user = self.credentials['user']
+        database = self.credentials['database']
+        password = self.credentials['password']
+        port = self.credentials['port']
+        host = self.credentials['host']
+
+        logging.info("Starting database initialization process.")
+
+        # Connect to the database, create if not exists
+        await self.connect_create_if_not_exists(
+            user=user,
+            database=database,
+            password=password,
+            port=port,
+            host=host
+        )
+
+        try:
+            # Connect to the target database
+            logging.info(f"Connecting to database '{database}' as user '{user}'")
+            conn = await self.get_db_connection()
+            logging.info(f"Successfully connected to database '{database}'")
+
+            # Create tables with logging
+            tables = {
+                "users": """
+                    CREATE TABLE IF NOT EXISTS users (
+                        id SERIAL PRIMARY KEY,
+                        email VARCHAR UNIQUE NOT NULL,
+                        hashed_password VARCHAR NOT NULL,
+                        created_at TIMESTAMPTZ DEFAULT NOW()
+                    );
+                """,
+                "oauth2_clients": """
+                    CREATE TABLE IF NOT EXISTS oauth2_clients (
+                        client_id VARCHAR PRIMARY KEY,
+                        client_secret VARCHAR,
+                        redirect_uris TEXT,
+                        created_at TIMESTAMPTZ DEFAULT NOW()
+                    );
+                """,
+                "oauth2_authorization_codes": """
+                    CREATE TABLE IF NOT EXISTS oauth2_authorization_codes (
+                        code VARCHAR PRIMARY KEY,
+                        client_id VARCHAR REFERENCES oauth2_clients(client_id),
+                        redirect_uri VARCHAR,
+                        scope VARCHAR,
+                        user_id INTEGER REFERENCES users(id),
+                        code_challenge VARCHAR,
+                        code_challenge_method VARCHAR,
+                        expires_at TIMESTAMPTZ
+                    );
+                """,
+                "refresh_tokens": """
+                    CREATE TABLE IF NOT EXISTS refresh_tokens (
+                        token VARCHAR PRIMARY KEY,
+                        user_id INTEGER REFERENCES users(id),
+                        expires_at TIMESTAMPTZ
+                    );
+                """
+            }
+
+            for table_name, create_stmt in tables.items():
+                logging.info(f"Creating table '{table_name}' if it does not exist.")
+                await conn.execute(create_stmt)
+                logging.info(f"Table '{table_name}' is ready.")
+
+            # Commit the transaction
+            logging.info("Committing the transaction.")
+            await conn.execute("COMMIT;")
+            logging.info("Database initialization completed successfully.")
+
+        except Exception as e:
+            logging.error(f"Error during database initialization: {e}")
+            raise
+        finally:
+            await conn.close()
+            logging.info(f"Closed connection to database '{database}'")
 
     async def get_db_connection(self):
-        return await asyncpg.connect(
-            user=self.credentials['user'],
-            database=self.credentials['database'],
-            password=self.credentials['password'],
-            port=self.credentials['port'],
-            host=self.credentials['host']
-        )
+        """
+        Establish a connection to the database.
+        """
+        try:
+            conn = await asyncpg.connect(
+                user=self.credentials['user'],
+                database=self.credentials['database'],
+                password=self.credentials['password'],
+                port=self.credentials['port'],
+                host=self.credentials['host']
+            )
+            logging.info(f"Established connection to database '{self.credentials['database']}' as user '{self.credentials['user']}'")
+            return conn
+        except Exception as e:
+            logging.error(f"Failed to establish database connection: {e}")
+            raise
 
     # User methods
     async def add_user(self, email: str, hashed_password: str):

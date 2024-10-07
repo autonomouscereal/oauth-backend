@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+asyncpg
+passlib[bcrypt]
+PyJWT
+starlette
+pydantic
+python-dotenv
+itsdangerous
+python-multipart
