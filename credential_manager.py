@@ -12,7 +12,7 @@ class CredentialManager:
         return {
             'user': os.environ.get('db_username'),
             'password': os.environ.get('db_password'),
-            'database': os.getenv('OAUTHDB','OAUTHDB'),
+            'database': os.getenv('OAUTHDB', 'OAUTHDB'),
             'host': os.getenv('DB_HOST', 'localhost'),
             'port': int(os.getenv('DB_PORT', 5999))
         }

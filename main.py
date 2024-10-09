@@ -1,8 +1,10 @@
 # main.py
+import sys
 
 from fastapi import FastAPI, Request, Form, Depends, HTTPException, status, Header
 from fastapi.responses import RedirectResponse, JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from passlib.context import CryptContext
 from datetime import datetime, timedelta, timezone
@@ -18,30 +20,50 @@ from db_helper import DBHelper
 from models import User, OAuth2Client, OAuth2AuthorizationCode, TokenRequest
 from credential_manager import CredentialManager
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, filename='app.log',
-                    format='%(asctime)s %(levelname)s %(message)s')
+# Configure logging to write to stdout only
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s %(levelname)s %(message)s',
+                    handlers=[
+                        logging.StreamHandler(sys.stdout)
+                    ])
+
+
+class OriginLoggingMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        origin = request.headers.get('origin')
+        logging.info(f"Incoming request from origin: {origin}")
+        response = await call_next(request)
+        return response
+
+
 
 app = FastAPI()
 
+# Add this middleware before CORSMiddleware
+app.add_middleware(OriginLoggingMiddleware)
+
 # CORS configuration
 origins = [
-    "http://localhost:3000",
-    "http://localhost:3300"
-    # Add other origins if needed
+    "http://localhost:3300",  # Frontend origin
+    "http://localhost:3000",  # If applicable, e.g., React default port
+    # Add other specific origins as needed
 ]
-
-# Session middleware
-app.add_middleware(SessionMiddleware, secret_key=CredentialManager.get_secret_key())
 
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Or ["*"] to allow all origins
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=origins,       # Specify allowed origins
+    allow_credentials=True,     # Allow credentials (cookies, authorization headers)
+    allow_methods=["*"],         # Allow all HTTP methods
+    allow_headers=["*"],         # Allow all headers
 )
+
+
+# Session middleware
+app.add_middleware(SessionMiddleware, secret_key=CredentialManager.get_secret_key())
+
+
+
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -99,6 +121,8 @@ async def get_current_user(request: Request):
 
 # Routes
 
+import json
+
 @app.get("/authorize")
 async def authorize(request: Request,
                     response_type: str,
@@ -130,6 +154,15 @@ async def authorize(request: Request,
         logging.error("Missing PKCE parameters")
         raise HTTPException(status_code=400, detail="Missing PKCE parameters")
 
+    # Parse state to extract original state and next_url
+    try:
+        state_data = json.loads(state)
+        original_state = state_data.get('state')
+        next_url = state_data.get('nextUrl')
+    except Exception as e:
+        logging.error(f"Invalid state parameter: {state}")
+        raise HTTPException(status_code=400, detail="Invalid state parameter")
+
     # Check if user is authenticated
     user_id = request.session.get('user_id')
     if not user_id:
@@ -139,9 +172,11 @@ async def authorize(request: Request,
             'client_id': client_id,
             'redirect_uri': redirect_uri,
             'scope': scope,
-            'state': state,
+            'state': original_state,  # Store only the original state
+            'state_json': state,  # Store the full state JSON string
             'code_challenge': code_challenge,
-            'code_challenge_method': code_challenge_method
+            'code_challenge_method': code_challenge_method,
+            'next_url': next_url  # Store next_url separately
         }
         return RedirectResponse(url="/login")
     else:
@@ -150,6 +185,17 @@ async def authorize(request: Request,
         if not user:
             # User not found, clear session
             request.session.clear()
+            request.session['auth_request'] = {
+                'response_type': response_type,
+                'client_id': client_id,
+                'redirect_uri': redirect_uri,
+                'scope': scope,
+                'state': original_state,  # Store only the original state
+                'state_json': state,  # Store the full state JSON string
+                'code_challenge': code_challenge,
+                'code_challenge_method': code_challenge_method,
+                'next_url': next_url  # Store next_url separately
+            }
             return RedirectResponse(url="/login")
 
     # Generate authorization code
@@ -168,10 +214,11 @@ async def authorize(request: Request,
 
     # Redirect back to client with authorization code
     params = {'code': code}
-    if state:
-        params['state'] = state
+    if original_state:
+        params['state'] = original_state
     redirect_with_params = f"{redirect_uri}?{urllib.parse.urlencode(params)}"
     return RedirectResponse(url=redirect_with_params)
+
 
 
 @app.get("/login")
@@ -327,17 +374,26 @@ async def login_post(request: Request, email: str = Form(...), password: str = F
     request.session['user_id'] = user['id']
     logging.info(f"User '{user['email']}' authenticated successfully with user_id '{user['id']}'.")
 
-    # Redirect back to authorization endpoint or next URL
+    # Retrieve auth_request from session
     auth_request = request.session.pop('auth_request', None)
     if auth_request:
-        query_params = urllib.parse.urlencode(auth_request)
-        redirect_url = f"/authorize?{query_params}"
+        # Redirect back to /authorize with stored parameters to continue the OAuth2 flow
+        redirect_url = f"/authorize?response_type={urllib.parse.quote(auth_request['response_type'])}" \
+                       f"&client_id={urllib.parse.quote(auth_request['client_id'])}" \
+                       f"&redirect_uri={urllib.parse.quote(auth_request['redirect_uri'])}" \
+                       f"&scope={urllib.parse.quote(auth_request['scope'] or '')}" \
+                       f"&state={urllib.parse.quote(auth_request['state_json'] or '')}" \
+                       f"&code_challenge={urllib.parse.quote(auth_request['code_challenge'])}" \
+                       f"&code_challenge_method={urllib.parse.quote(auth_request['code_challenge_method'])}"
         logging.info(f"Redirecting user '{user['email']}' to authorization endpoint with URL: {redirect_url}")
-        return RedirectResponse(url=redirect_url)
+        return RedirectResponse(url=redirect_url, status_code=303)
     else:
+        # No auth_request found, redirect to 'next_url' if present
         next_url = request.session.pop('next_url', '/')
         logging.info(f"Redirecting user '{user['email']}' to next URL: {next_url}")
-        return RedirectResponse(url=next_url)
+        return RedirectResponse(url=next_url, status_code=303)
+
+
 
 
 @app.post("/token")
@@ -347,6 +403,9 @@ async def token(request: Request,
                 redirect_uri: str = Form(None),
                 client_id: str = Form(None),
                 code_verifier: str = Form(None)):
+    logging.info("Received /token request")
+    logging.info(f"Parameters - grant_type: {grant_type}, code: {code}, redirect_uri: {redirect_uri}, client_id: {client_id}, code_verifier: {code_verifier}")
+
     if grant_type != 'authorization_code':
         logging.error(f"Unsupported grant_type: {grant_type}")
         raise HTTPException(status_code=400, detail="Unsupported grant_type")
@@ -408,12 +467,15 @@ async def token(request: Request,
     # Delete authorization code
     await db_helper.delete_authorization_code(code)
 
+    logging.info(f"Issued access_token and refresh_token for user_id: {user['id']}")
+
     return {
         "access_token": access_token,
         "token_type": "bearer",
         "expires_in": ACCESS_TOKEN_EXPIRE_MINUTES * 60,
         "refresh_token": refresh_token
     }
+
 
 @app.post("/token/refresh")
 async def token_refresh(refresh_token: str = Form(...)):

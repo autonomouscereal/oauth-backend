@@ -14,21 +14,23 @@ WORKDIR /app
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    postgresql \
-    postgresql-contrib \
-    supervisor \
-    && rm -rf /var/lib/apt/lists/*
+build-essential \
+libpq-dev \
+postgresql \
+postgresql-contrib \
+&& rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install Supervisor using pip for Python 3
+RUN pip install supervisor
+
 # Copy the application code
 COPY . .
 
-# Copy the supervisor configuration file
+# Copy and set up Supervisor configuration
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Copy the initialization script
@@ -41,5 +43,5 @@ RUN mkdir -p /var/log/postgresql && mkdir -p /var/log/fastapi
 # Expose port 3100
 EXPOSE 3100
 
-# Set the entrypoint to run the init script before starting supervisord
-ENTRYPOINT ["/bin/bash", "-c", "/init.sh && /usr/bin/supervisord -n"]
+# Entrypoint to initialize PostgreSQL and start Supervisor
+ENTRYPOINT ["/bin/bash", "-c", "/init.sh && supervisord -n -c /etc/supervisor/conf.d/supervisord.conf"]
