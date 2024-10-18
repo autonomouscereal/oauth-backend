@@ -1,6 +1,8 @@
 # main.py
 import sys
 
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi import FastAPI, Request, Form, Depends, HTTPException, status, Header
 from fastapi.responses import RedirectResponse, JSONResponse, HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -62,7 +64,8 @@ app.add_middleware(
 # Session middleware
 app.add_middleware(SessionMiddleware, secret_key=CredentialManager.get_secret_key())
 
-
+# Add middleware
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])
 
 
 # Password hashing
