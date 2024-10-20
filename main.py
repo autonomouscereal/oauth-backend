@@ -1,4 +1,5 @@
 # main.py
+import os
 import sys
 
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -44,12 +45,25 @@ app = FastAPI()
 # Add this middleware before CORSMiddleware
 app.add_middleware(OriginLoggingMiddleware)
 
+# Determine environment
+environment = os.getenv('ENVIRONMENT', 'development')
+
 # CORS configuration
-origins = [
-    "http://localhost:3300",  # Frontend origin
-    "http://localhost:3000",  # If applicable, e.g., React default port
-    # Add other specific origins as needed
-]
+# Define allowed origins based on environment
+if environment == 'production':
+    origins = [
+        "https://pass.cerealsoft.com",
+        "https://auth.cerealsoft.com",
+        "https://passbackend.cerealsoft.com",
+        # Add other production origins if needed
+    ]
+else:
+    origins = [
+        "https://localhost:3300",  # Frontend origin
+        "https://localhost:3200",
+        "http://localhost:3000",  # If applicable, e.g., React default port
+        # Add other specific origins as needed
+    ]
 
 # CORS middleware
 app.add_middleware(
@@ -92,7 +106,10 @@ async def startup():
 
         client_id_password_vault = 'a1b2c3d4-5678-90ab-cdef-1234567890ac'
         client_secret_password_vault = 'b2c3d4e5-6789-01ab-cdef-2345678901bc'
-        redirect_uri_password_vault = 'http://localhost:3300/callback'
+        if environment == 'production':
+            redirect_uri_password_vault = 'https://pass.cerealsoft.com/callback'
+        else:
+            redirect_uri_password_vault = 'https://localhost:3300/callback'
         existing_client2 = await db_helper.get_client_by_id(client_id_password_vault)
         if not existing_client2:
             await db_helper.add_client(client_id_password_vault, client_secret_password_vault, redirect_uri_password_vault)

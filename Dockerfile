@@ -8,6 +8,7 @@ ENV SECRET_KEY=your_secret_key
 ENV DB_HOST=localhost
 ENV DB_PORT=5432
 ENV OAUTHDB=OAUTHDB
+ENV ENVIRONMENT=production
 
 # Set the working directory
 WORKDIR /app
